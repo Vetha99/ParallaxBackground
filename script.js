@@ -4,30 +4,44 @@ const ctx = canvas.getContext("2d")
 const CANVAS_WIDTH = canvas.width = 800
 const CANVAS_HEIGHT = canvas.height = 700
 
-let gameSpeed = 15
+let gameSpeed = 5
+class Layer{
+    constructor(imageSrc,speedModifier){
+        this.imageLayer = new Image()
+        this.imageLayer.src = imageSrc
+        this.speedModifier = speedModifier
+        this.x = 0
+        this.width = 2400
+        this.x2 = this.width
+    }
+    update(gameSpeed){
+        const speed = gameSpeed*this.speedModifier
+        if (this.x<-this.width) this.x = this.width + this.x2 - speed
+        else this.x-= speed
+        if (this.x2<-this.width) this.x2 = this.width + this.x - speed
+        else this.x2-=speed
+    }
+    
+    draw(ctx){
+        ctx.drawImage(this.imageLayer, this.x, 0); 
+        ctx.drawImage(this.imageLayer, this.x2, 0); 
+    }
+}
 
-const backgroundLayer1 = new Image()
-backgroundLayer1.src = "layer-1.png"
-const backgroundLayer2 = new Image()
-backgroundLayer2.src = "layer-2.png"
-const backgroundLayer3 = new Image()
-backgroundLayer3.src = "layer-3.png"
-const backgroundLayer4 = new Image()
-backgroundLayer4.src = "layer-4.png"
-const backgroundLayer5 = new Image()
-backgroundLayer5.src = "layer-5.png"
+const backgroundLayer1 = new Layer("layer-1.png",0.2)
+const backgroundLayer2 = new Layer("layer-2.png",0.4)
+const backgroundLayer3 = new Layer("layer-3.png",0.6)
+const backgroundLayer4 = new Layer("layer-4.png",0.8)
+const backgroundLayer5 = new Layer("layer-5.png",1)
 
-let x = 0
-let x2 = 2400
+const backgroundLayers = [backgroundLayer1,backgroundLayer2,backgroundLayer3,backgroundLayer4,backgroundLayer5]
 
 function animate(){
     ctx.clearRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT)
-    ctx.drawImage(backgroundLayer4, x, 0); 
-    ctx.drawImage(backgroundLayer4, x2, 0); 
-    if (x<-2400) x = 2400 + x2 - gameSpeed
-    else x-=gameSpeed
-    if (x2<-2400) x2 = 2400 + x - gameSpeed
-    else x2-=gameSpeed
+    backgroundLayers.forEach(backgroundLayer => {
+        backgroundLayer.update(gameSpeed)
+        backgroundLayer.draw(ctx)
+    });
     requestAnimationFrame(animate)
 }
 animate()
