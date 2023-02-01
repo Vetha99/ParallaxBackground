@@ -5,6 +5,15 @@ const CANVAS_WIDTH = canvas.width = 800
 const CANVAS_HEIGHT = canvas.height = 700
 
 let gameSpeed = 5
+const slider = document.getElementById("slider")
+slider.value = gameSpeed
+const showGameSpeed = document.getElementById("showGameSpeed")
+showGameSpeed.innerHTML = gameSpeed
+slider.addEventListener("change", function(e){
+    gameSpeed = e.target.value
+    showGameSpeed.innerHTML = e.target.value
+})
+
 class Layer{
     constructor(imageSrc,speedModifier){
         this.imageLayer = new Image()
