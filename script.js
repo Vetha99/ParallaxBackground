@@ -21,19 +21,16 @@ class Layer{
         this.speedModifier = speedModifier
         this.x = 0
         this.width = 2400
-        this.x2 = this.width
     }
     update(gameSpeed){
         const speed = gameSpeed*this.speedModifier
-        if (this.x<-this.width) this.x = this.width + this.x2 - speed
-        else this.x-= speed
-        if (this.x2<-this.width) this.x2 = this.width + this.x - speed
-        else this.x2-=speed
+        if (this.x<= -this.width) this.x = 0
+        this.x-=speed
     }
     
     draw(ctx){
         ctx.drawImage(this.imageLayer, this.x, 0); 
-        ctx.drawImage(this.imageLayer, this.x2, 0); 
+        ctx.drawImage(this.imageLayer, this.x+this.width, 0); 
     }
 }
 
